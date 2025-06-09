@@ -1,0 +1,11 @@
+[
+  { "exe": "brave.exe", "title": "^Titan - ", "desktop": 4 },
+  { "exe": "brave.exe", "desktop": 1 },
+  { "exe": "explorer.exe", "desktop": 2 },
+  { "exe": "code.exe", "desktop": 3 },
+  { "exe": "ApplicationFrameHost.exe", "title": "^WhatsApp$", "desktop": 5 },
+  { "exe": "discord.exe", "desktop": 5 },
+  { "exe": "Todoist.exe", "desktop": 6 },
+  { "exe": "PhoneExperienceHost.exe", "desktop": 7 },
+  { "exe": "WindowsTerminal.exe", "desktop": 8 }
+]
