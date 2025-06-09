@@ -175,7 +175,11 @@ WatchWindows()
 
     for hwnd in WinGetList()
     {
-        exe := WinGetProcessName(hwnd)
+        try exe := WinGetProcessName(hwnd)
+        catch {
+            continue  ; Skip inaccessible window (e.g., admin prompt)
+        }
+
         if !exe
             continue
 
