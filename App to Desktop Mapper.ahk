@@ -199,8 +199,10 @@ WatchWindows()
 
                     index := rule["desktop"]
                     EnsureDesktopExists(index)
-                    DllCall(MoveWindowToDesktopNumber, "Ptr", hwnd, "Int", index - 1, "Int")
-                    seen[hwnd] := true
+                    moved := DllCall(MoveWindowToDesktopNumber, "Ptr", hwnd, "Int", index - 1, "Cdecl Int")
+                    if (moved) {
+                        seen[hwnd] := true  ; ✅ only mark as seen if successful
+                    }
                     break
                 }
             }
