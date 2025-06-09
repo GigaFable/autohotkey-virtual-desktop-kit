@@ -45,29 +45,31 @@ EnsureDesktopExists(index) {
 
 DoSwitchDesktop(index) {
     EnsureDesktopExists(index)
-    target := index - 1
     DllCall(GoToDesktopNumber, "Int", index - 1, "Cdecl Int")
+    Sleep 200  ; allow switch to complete
 
-    Sleep 200
-
+    hwnd := ""
     if lastFocused.Has(index) {
         hwnd := lastFocused[index]
-        if WinExist("ahk_id " hwnd)
-        {
-            currentDesktop := DllCall(GetWindowDesktopNumber, "Ptr", hwnd, "Cdecl Int")
-            if (currentDesktop = index - 1)  ; DLL uses 0-based indexes
-                WinActivate("ahk_id " hwnd)
+        if WinExist("ahk_id " hwnd) {
+            desktop := DllCall(GetWindowDesktopNumber, "Ptr", hwnd, "Cdecl Int")
+            if (desktop = index - 1)
+                return WinActivate("ahk_id " hwnd)
         }
     }
 
-    if lastFocused.Has(index) {
-        hwnd := lastFocused[index]
-        ; Validate it's still on that desktop and exists
-        if WinExist("ahk_id " hwnd)
-        {
-            thisDesktop := DllCall(GetWindowDesktopNumber, "Ptr", hwnd, "Cdecl Int")
-            If (thisDesktop = index - 1)
-                WinActivate("ahk_id " hwnd)
+    ; No valid last-focused window — fallback to first visible window on this desktop
+    for candidate in WinGetList() {
+        try {
+            if !WinExist("ahk_id " candidate)
+                continue
+            desktop := DllCall(GetWindowDesktopNumber, "Ptr", candidate, "Cdecl Int")
+            if (desktop = index - 1) {
+                WinActivate("ahk_id " candidate)
+                return
+            }
+        } catch {
+            continue  ; skip inaccessible windows (admin/UAC, etc.)
         }
     }
 }
