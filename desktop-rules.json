@@ -1,11 +1,29 @@
 [
+  {
+    "exe": "brave.exe",
+    "title": "^^(\\(\\d+\\) )?Messenger \\| Facebook - Brave$",
+    "desktop": 4
+  },
+  {
+    "exe": "brave.exe",
+    "title": "^(\\(\\d+\\) )?Facebook - Brave$",
+    "desktop": 4
+  },
+  {
+    "exe": "brave.exe",
+    "title": "\\| Facebook - Brave$",
+    "desktop": 4
+  },
   { "exe": "brave.exe", "title": "^Titan - ", "desktop": 4 },
+  { "exe": "thunderbird.exe", "desktop": 4 },
   { "exe": "brave.exe", "desktop": 1 },
   { "exe": "explorer.exe", "desktop": 2 },
   { "exe": "code.exe", "desktop": 3 },
-  { "exe": "ApplicationFrameHost.exe", "title": "^WhatsApp$", "desktop": 5 },
-  { "exe": "discord.exe", "desktop": 5 },
+  { "exe": "ApplicationFrameHost.exe", "title": "^WhatsApp$", "desktop": 4 },
+  { "exe": "discord.exe", "desktop": 4 },
   { "exe": "Todoist.exe", "desktop": 6 },
   { "exe": "PhoneExperienceHost.exe", "desktop": 7 },
-  { "exe": "WindowsTerminal.exe", "desktop": 8 }
+  { "exe": "WindowsTerminal.exe", "desktop": 8 },
+  { "exe": "Obsidian.exe", "desktop": 9 },
+  { "exe": "Spotify.exe", "desktop": 10 }
 ]
