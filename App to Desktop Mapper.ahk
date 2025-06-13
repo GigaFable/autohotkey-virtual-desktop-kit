@@ -138,7 +138,6 @@ jxon_load(&src) {
     }
 }
 
-
 ; === Load DLL and function pointers ===
 vda := DllCall("LoadLibrary", "Str", "VirtualDesktopAccessor.dll", "Ptr")
 GoToDesktopNumber := DllCall("GetProcAddress", "Ptr", vda, "AStr", "GoToDesktopNumber", "Ptr")
@@ -153,8 +152,7 @@ if (!GoToDesktopNumber || !GetDesktopCount || !CreateDesktop || !MoveWindowToDes
 
 ; === App → Desktop rules ===
 rulesPath := A_ScriptDir "\desktop-rules.json"
-if !FileExist(rulesPath)
-{
+if !FileExist(rulesPath) {
     MsgBox "❌ desktop-rules.json not found."
     ExitApp
 }
@@ -168,13 +166,11 @@ seen := Map()
 ; === Main monitoring loop ===
 SetTimer(WatchWindows, 250)
 
-WatchWindows()
-{
+WatchWindows() {
     global appsToDesktops, seen
     seenHwnds := Map()
 
-    for hwnd in WinGetList()
-    {
+    for hwnd in WinGetList() {
         try exe := WinGetProcessName(hwnd)
         catch {
             continue  ; Skip inaccessible window (e.g., admin prompt)
@@ -186,14 +182,11 @@ WatchWindows()
         exe := StrLower(exe)
         seenHwnds[hwnd] := true
 
-        if !seen.Has(hwnd)
-        {
+        if !seen.Has(hwnd) {
             title := WinGetTitle(hwnd)
 
-            for rule in appsToDesktops
-            {
-                if (StrLower(exe) = StrLower(rule["exe"]))
-                {
+            for rule in appsToDesktops {
+                if (StrLower(exe) = StrLower(rule["exe"])) {
                     if rule.Has("title") && !RegExMatch(title, rule["title"])
                         continue
 
@@ -210,18 +203,15 @@ WatchWindows()
     }
 
     ; Remove any stale hwnds from the seen map
-    for hwnd in seen
-    {
+    for hwnd in seen {
         if !seenHwnds.Has(hwnd)
             seen.Delete(hwnd)
     }
 }
 
-EnsureDesktopExists(index)
-{
+EnsureDesktopExists(index) {
     current := DllCall(GetDesktopCount, "Int")
-    while (current < index)
-    {
+    while (current < index) {
         DllCall(CreateDesktop, "Int")
         current++
     }
@@ -231,7 +221,7 @@ EnsureDesktopExists(index)
 TrayTip "Auto desktop assigner is running...", "Press Ctrl+Alt+Esc to exit", 1
 
 ; Exit hotkey
-^!Esc::ExitApp
+^!Esc:: ExitApp
 
 ^!r:: { ; Ctrl + Alt + R
     global appsToDesktops
