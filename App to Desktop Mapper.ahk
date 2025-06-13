@@ -185,6 +185,13 @@ WatchWindows() {
         if !seen.Has(hwnd) {
             title := WinGetTitle(hwnd)
 
+            ; Get window class name
+            class := WinGetClass(hwnd)
+            if (class = "#32770") { ; Ignore dialog boxes
+                seen[hwnd] := true
+                continue
+            }
+
             for rule in appsToDesktops {
                 if (StrLower(exe) = StrLower(rule["exe"])) {
                     if rule.Has("title") && !RegExMatch(title, rule["title"])
