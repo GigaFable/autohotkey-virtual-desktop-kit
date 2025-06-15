@@ -14,6 +14,7 @@ Provides powerful hotkeys for manual control of virtual desktops:
 - `Win + Shift + 1..0`: Move the active window to desktop 1–10
 - Automatically creates missing desktops as needed
 - Powered by `VirtualDesktopAccessor.dll`
+- Unpin all items from the taskbar to stop windows using the same keys
 
 ### 2. `App to Desktop Mapper.ahk`
 
@@ -29,12 +30,14 @@ Automatically moves specific apps to predefined desktops:
 
 ## 📂 Folder Structure
 
+```
 auto-hotkey-virtual-desktop-kit/
 │
 ├─ App to Desktop Mapper.ahk ; Auto-placement of apps on desktops
 ├─ Windows Desktop Hotkeys.ahk ; Win+number and Win+Shift+number shortcuts
 ├─ desktop-rules.json ; User-editable config for app mapping
 └─ VirtualDesktopAccessor.dll ; Required native DLL (get from Ciantic's repo)
+```
 
 ---
 
