@@ -5,14 +5,15 @@ global lastFocused := Map()
 ; === Load DLL and get function pointers ===
 vda := DllCall("LoadLibrary", "Str", "VirtualDesktopAccessor.dll", "Ptr")
 
-global GoToDesktopNumber       := DllCall("GetProcAddress", "Ptr", vda, "AStr", "GoToDesktopNumber", "Ptr")
-global GetDesktopCount         := DllCall("GetProcAddress", "Ptr", vda, "AStr", "GetDesktopCount", "Ptr")
-global CreateDesktop           := DllCall("GetProcAddress", "Ptr", vda, "AStr", "CreateDesktop", "Ptr")
+global GoToDesktopNumber := DllCall("GetProcAddress", "Ptr", vda, "AStr", "GoToDesktopNumber", "Ptr")
+global GetDesktopCount := DllCall("GetProcAddress", "Ptr", vda, "AStr", "GetDesktopCount", "Ptr")
+global CreateDesktop := DllCall("GetProcAddress", "Ptr", vda, "AStr", "CreateDesktop", "Ptr")
 global MoveWindowToDesktopNumber := DllCall("GetProcAddress", "Ptr", vda, "AStr", "MoveWindowToDesktopNumber", "Ptr")
-global GetWindowDesktopNumber  := DllCall("GetProcAddress", "Ptr", vda, "AStr", "GetWindowDesktopNumber", "Ptr")
+global GetWindowDesktopNumber := DllCall("GetProcAddress", "Ptr", vda, "AStr", "GetWindowDesktopNumber", "Ptr")
 global GetCurrentDesktopNumber := DllCall("GetProcAddress", "Ptr", vda, "AStr", "GetCurrentDesktopNumber", "Ptr")
 
-if (!GoToDesktopNumber || !GetDesktopCount || !CreateDesktop || !MoveWindowToDesktopNumber || !GetWindowDesktopNumber || !GetCurrentDesktopNumber) {
+if (!GoToDesktopNumber || !GetDesktopCount || !CreateDesktop || !MoveWindowToDesktopNumber || !GetWindowDesktopNumber ||
+    !GetCurrentDesktopNumber) {
     MsgBox "❌ One or more required functions not found in the DLL."
     ExitApp
 }
@@ -54,7 +55,11 @@ DoSwitchDesktop(index) {
         if WinExist("ahk_id " hwnd) {
             desktop := DllCall(GetWindowDesktopNumber, "Ptr", hwnd, "Cdecl Int")
             if (desktop = index - 1)
-                return WinActivate("ahk_id " hwnd)
+                try {
+                    return WinActivate("ahk_id " hwnd)
+                } catch {
+                    return ; Occasionally caused issues.
+                }
         }
     }
 

@@ -183,10 +183,14 @@ WatchWindows() {
         seenHwnds[hwnd] := true
 
         if !seen.Has(hwnd) {
-            title := WinGetTitle(hwnd)
+            try {
+                title := WinGetTitle(hwnd)
+                class := WinGetClass(hwnd)
+            } catch {
+                seen[hwnd] := true  ; Mark as seen to avoid repeated errors
+                continue
+            }
 
-            ; Get window class name
-            class := WinGetClass(hwnd)
             if (class = "#32770") { ; Ignore dialog boxes
                 seen[hwnd] := true
                 continue
